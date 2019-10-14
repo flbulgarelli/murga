@@ -1,1 +1,11 @@
 node_modules
+
+
+offline-primaria/assets
+offline-primaria/contents
+offline/assets
+offline/contents
+
+cumparsita-linux-x64/
+
+assets/*
