@@ -14,5 +14,5 @@ cp ./offline-primaria/contents/*.html primaria/
 cp ./offline/contents/*.html secundaria/
 
 echo "[Ikumi::Offline] Copying assets..."
-cp ./offline-primaria/assets/* assets/
 cp ./offline/assets/* assets/
+cp ./offline-primaria/assets/* assets/

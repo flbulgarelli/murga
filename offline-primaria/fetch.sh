@@ -55,7 +55,7 @@ done
 
 echo "[Ikumi::Offline] Fetching fonts..."
 for i in dev-awesome.woff2 fontawesome-webfont.woff2 fontawesome-webfont.ttf; do
-  echo "[Ikumi::Offline] ...fetching $i..."
+  echo "[Ikumi::Offline] ...fetching $i"
   curl "http://localhost:3000/assets/$i" -s > assets/$i
   sed -i "s|/assets/$i|../assets/$i|g" assets/*.css
 done
@@ -63,3 +63,14 @@ done
 echo "[Ikumi::Offline] Fetching compass rose..."
 curl "http://localhost:3000/compass_rose.svg" -s > assets/compass_rose.svg
 sed -i "s|/compass_rose.svg|../assets/compass_rose.svg|g" contents/*.html
+
+echo "[Ikumi::Offline] Fetching characters..."
+curl "http://localhost:3000/character/animations.json" -s > assets/animations.json
+sed -i "s|/character/animations.json|../assets/animations.json|g" assets/application.js
+
+echo "[Ikumi::Offline] Fetching errors..."
+for i in timeout_1 timeout_2 timeout_3; do
+  echo "[Ikumi::Offline] ...fetching $i"
+  curl "http://localhost:3000/error/$i.svg" -s > assets/$i.svg
+done
+sed -i "s|/error/|../assets/|g" assets/application.js
