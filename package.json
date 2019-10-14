@@ -1,0 +1,26 @@
+{
+  "name": "cumparsita",
+  "version": "1.0.0",
+  "description": "A simple desktop Mumuki offline pacakge",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/mumuki/cumparsita",
+  "keywords": [
+    "Electron",
+    "quick",
+    "start",
+    "tutorial",
+    "demo"
+  ],
+  "author": "Franco Leonardo Bulgarelli",
+  "license": "GPLv3",
+  "devDependencies": {
+    "electron": "^6.0.12",
+    "electron-packager": "^14.0.6"
+  },
+  "dependencies": {
+    "mulang": "^5.1.0"
+  }
+}
