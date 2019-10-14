@@ -26,3 +26,14 @@
 1. Run `npm install electron-packager -g`
 2. Run `electron-packager . --overwrite`
 3. Run `./cumparsita-linux-x64/cumparsita`
+
+# Pending tasks
+
+1. Unify scripts: fetch assets only once
+2. Download full guides given its slugs instead of their exercise's numbers
+3. Link downloaded content from menu
+4. Fetch characters
+4. Wire offline evaluation
+5. Save state in local storage
+6. Export state to importable JSON
+7. Chapter and book page
