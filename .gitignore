@@ -8,4 +8,5 @@ offline/contents
 
 cumparsita-linux-x64/
 
-assets/*
+**/assets/*
+**/character/*

@@ -45,7 +45,7 @@ echo "[Ikumi::Offline] Resolving exercse references..."
 sed -i "s|/central/exercises/\([0-9][0-9][0-9]\)|\1.html#|g" contents/*.html
 
 echo "[Ikumi::Offline] Replacing Gobstones assets..."
-for i in polymer gs-board polymer-mini polymer-micro; do
+for i in polymer gs-board polymer-mini polymer-micro local runner; do
   echo "[Ikumi::Offline] ...replacing $i.html"
   curl "http://localhost:9292/assets/$i.html" -s > assets/$i.html
   sed -i "s|http://localhost:9292/assets/$i.html|../assets/$i.html|g" contents/*.html

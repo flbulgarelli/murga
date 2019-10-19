@@ -30,9 +30,9 @@ function createWindow () {
   ])
   Menu.setApplicationMenu(menu);
 
-  mainWindow.loadFile('secundaria/795.html')
+  mainWindow.loadFile('primaria/1715.html')
 
-  //mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null

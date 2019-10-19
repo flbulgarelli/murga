@@ -4,8 +4,12 @@ set -e
 
 rm -rf contents
 rm -rf assets
+rm -rf character
+
 mkdir assets
 mkdir contents
+mkdir -p character/kibi
+mkdir -p character/magnifying_glass
 
 echo "[Ikumi::Offline] Fetching exercises..."
 for i in {1715..1722}; do
@@ -45,7 +49,15 @@ echo "[Ikumi::Offline] Resolving exercse references..."
 sed -i "s|/primaria/exercises/\([0-9][0-9][0-9][0-9]\)|\1.html#|g" contents/*.html
 
 echo "[Ikumi::Offline] Replacing Gobstones assets..."
-for i in polymer.html gs-board.html polymer-mini.html polymer-micro.html editor/editor.html editor/editor.css editor/editor.js editor/hammer.min.js editor/gobstones-code-runner.html editor/gs-element-blockly.html editor/attires_enabled.svg editor/attires_disabled.svg editor/red.svg editor/green.svg editor/blue.svg editor/black.svg; do
+for i in polymer.html gs-board.html \
+         polymer-mini.html polymer-micro.html \
+         runner.js local.js \
+         editor/editor.html editor/editor.css \
+         editor/editor.js editor/hammer.min.js \
+         editor/gobstones-code-runner.html \
+         editor/gs-element-blockly.html \
+         editor/attires_enabled.svg editor/attires_disabled.svg  \
+         editor/red.svg editor/green.svg editor/blue.svg editor/black.svg; do
   file_name=$(basename $i)
 
   echo "[Ikumi::Offline] ...replacing $i"
@@ -65,8 +77,16 @@ curl "http://localhost:3000/compass_rose.svg" -s > assets/compass_rose.svg
 sed -i "s|/compass_rose.svg|../assets/compass_rose.svg|g" contents/*.html
 
 echo "[Ikumi::Offline] Fetching characters..."
-curl "http://localhost:3000/character/animations.json" -s > assets/animations.json
-sed -i "s|/character/animations.json|../assets/animations.json|g" assets/application.js
+curl "http://localhost:3000/character/animations.json" -s > character/animations.json
+for i in context failure jump success2_l success_l; do
+  echo "[Ikumi::Offline] ...fetching kibi/$i"
+  curl "http://localhost:3000/character/kibi/$i.svg" -s > character/kibi/$i.svg
+done
+for i in apparition loop; do
+  echo "[Ikumi::Offline] ...fetching magnifying_glass/$i"
+  curl "http://localhost:3000/character/magnifying_glass/$i.svg" -s > character/magnifying_glass/$i.svg
+done
+sed -i "s|/character/|../character/|g" assets/application.js
 
 echo "[Ikumi::Offline] Fetching errors..."
 for i in timeout_1 timeout_2 timeout_3; do
