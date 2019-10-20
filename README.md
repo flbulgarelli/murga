@@ -25,7 +25,7 @@
 
 1. Run `npm install electron-packager -g`
 2. Run `electron-packager . --overwrite`
-3. Run `./cumparsita-linux-x64/cumparsita`
+3. Run `./murga-linux-x64/murga`
 
 # Pending tasks
 

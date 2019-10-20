@@ -1,12 +1,12 @@
 {
-  "name": "cumparsita",
+  "name": "murga",
   "version": "1.0.0",
   "description": "A simple desktop Mumuki offline pacakge",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
   },
-  "repository": "https://github.com/mumuki/cumparsita",
+  "repository": "https://github.com/flbulgarelli/murga",
   "keywords": [
     "Electron",
     "quick",

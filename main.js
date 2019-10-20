@@ -18,19 +18,27 @@ function createWindow () {
         label: 'Recorridos',
         submenu: [
             {
-              label:'Primaria',
-              click() { mainWindow.loadFile('primaria/1715.html') }
+              label:'Primaria - Capitulo 1 - Primeros Programas',
+              click() { mainWindow.loadFile('exercises/1529.html') }
             },
             {
-              label:'Secundaria',
-              click() { mainWindow.loadFile('secundaria/795.html') }
-            }
+              label:'Primaria - Capitulo 1 - Práctica Primeros Programas',
+              click() { mainWindow.loadFile('exercises/1544.html') }
+            },
+            {
+              label:'Primaria - Capitulo 2 - Procedimientos',
+              click() { mainWindow.loadFile('exercises/1715.html') }
+            },
+            {
+              label:'Primaria - Capitulo 2 - Práctica Procedimientos',
+              click() { mainWindow.loadFile('exercises/1669.html') }
+            },
         ]
     }
   ])
   Menu.setApplicationMenu(menu);
 
-  mainWindow.loadFile('primaria/1715.html')
+  mainWindow.loadFile('exercises/1715.html')
 
   mainWindow.webContents.openDevTools()
 
