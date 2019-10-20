@@ -6,9 +6,11 @@ offline-primaria/contents
 offline/assets
 offline/contents
 
-cumparsita-linux-x64/
+murga-linux-x64/
 
 **/assets/*
 **/character/*
 **/contents/*
 **/exercises/*
+**/chapters/**
+**/lessons/*

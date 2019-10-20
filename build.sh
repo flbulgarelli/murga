@@ -3,28 +3,70 @@
 set -e
 
 rm -rf exercises
+rm -rf lessons
+rm -rf chapters
 rm -rf assets
 rm -rf character
 
 mkdir assets
 mkdir exercises
+mkdir lessons
+mkdir chapters
 mkdir -p character/kibi
 mkdir -p character/magnifying_glass
 
+function fetch() {
+  source=$1
+  destination=$2
+  curl "http://localhost:3000/$source" -H 'Connection: keep-alive' \
+                                                    -H 'Pragma: no-cache' \
+                                                    -H 'Cache-Control: no-cache' \
+                                                    -H 'Upgrade-Insecure-Requests: 1' \
+                                                    -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36' \
+                                                    -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
+                                                    -H 'Accept-Encoding: gzip, deflate, br' \
+                                                    -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8' \
+                                                    -H 'Cookie: login_organization=primaria; mucookie_session=N3pqbFhjbjlIWExmeFJMQ2xlK1N3NVhNQ0ZFZjdjemlBSHhNYVhySGk2az0tLWw1c1QwRUMxTnlIdVFmRjZ3ZEh3N0E9PQ%3D%3D--7a433a3f9284f53eba1c175ef8a5a4633c665222; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=MWhab3ZqTS9HOEUrY1h4aTZlTWM4UHU0VjlrMnlBcUVwRWtJdk01Nzk2R21MZFM1WW14M0txRGxkWGs2TnNsVmlBUGNoMThYblZ1K1N5WW4zS09WSytJUFRFNGJ1QXZJNGdIbUd0a0VvaFg1MTJWMWpjTG0veFdaZTQ5bEpySVlocFBiMWNZMXJkOE1QUFdIZ082MjZ3PT0tLWJJTEFYbkpROFZIK3dqYlg5TWFRbEE9PQ%3D%3D--6e6de6549a844c9e0b713629544fa102cace8ac2' \
+                                                    --compressed -s > $destination
+
+}
+
 echo "[Murga] Fetching exercises..."
+
 for i in {1715..1722}; do
   echo "[Murga] ...fetching exercise $i"
-  curl "http://localhost:3000/primaria/exercises/$i" -H 'Connection: keep-alive' \
-                                                     -H 'Pragma: no-cache' \
-                                                     -H 'Cache-Control: no-cache' \
-                                                     -H 'Upgrade-Insecure-Requests: 1' \
-                                                     -H 'User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36' \
-                                                     -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
-                                                     -H 'Accept-Encoding: gzip, deflate, br' \
-                                                     -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8' \
-                                                     -H 'Cookie: login_organization=primaria; mucookie_session=N3pqbFhjbjlIWExmeFJMQ2xlK1N3NVhNQ0ZFZjdjemlBSHhNYVhySGk2az0tLWw1c1QwRUMxTnlIdVFmRjZ3ZEh3N0E9PQ%3D%3D--7a433a3f9284f53eba1c175ef8a5a4633c665222; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=MWhab3ZqTS9HOEUrY1h4aTZlTWM4UHU0VjlrMnlBcUVwRWtJdk01Nzk2R21MZFM1WW14M0txRGxkWGs2TnNsVmlBUGNoMThYblZ1K1N5WW4zS09WSytJUFRFNGJ1QXZJNGdIbUd0a0VvaFg1MTJWMWpjTG0veFdaZTQ5bEpySVlocFBiMWNZMXJkOE1QUFdIZ082MjZ3PT0tLWJJTEFYbkpROFZIK3dqYlg5TWFRbEE9PQ%3D%3D--6e6de6549a844c9e0b713629544fa102cace8ac2' \
-                                                     --compressed -s > exercises/$i.html
+  fetch "primaria/exercises/$i" "exercises/$i.html"
 done
+
+for i in {1529..1535}; do
+  echo "[Murga] ...fetching exercise $i"
+  fetch "primaria/exercises/$i" "exercises/$i.html"
+done
+
+for i in {1544..1550}; do
+  echo "[Murga] ...fetching exercise $i"
+  fetch "primaria/exercises/$i" "exercises/$i.html"
+done
+
+for i in {1669..1675}; do
+  echo "[Murga] ...fetching exercise $i"
+  fetch "primaria/exercises/$i" "exercises/$i.html"
+done
+
+echo "[Murga] Fetching lessons..."
+
+for i in 84 85 94 95 107 108; do
+  echo "[Murga] ...fetching lessons $i"
+  fetch "primaria/lessons/$i" "lessons/$i.html"
+done
+
+echo "[Murga] Fetching chapters..."
+
+for i in {37..42}; do
+  echo "[Murga] ...fetching chapters $i"
+  fetch "primaria/chapters/$i" "chapters/$i.html"
+done
+
 
 echo "[Murga] Fetching application css and js..."
 js=$(grep -P "/assets/mumuki_laboratory/application\-.*\.js" exercises/*.html -oh | head -n1)
@@ -33,25 +75,42 @@ css=$(grep -P "/assets/mumuki_laboratory/application\-.*\.css" exercises/*.html 
 curl "http://localhost:3000$js" -s > assets/application.js
 curl "http://localhost:3000$css" -s > assets/application.css
 
-sed -i "s|$js|../assets/application.js|g" exercises/*.html
-sed -i "s|$css|../assets/application.css|g" exercises/*.html
+for i in exercises lessons chapters; do
+  echo "[Murga] Replacing css and js references..."
+  sed -i "s|$js|../assets/application.js|g" $i/*.html
+  sed -i "s|$css|../assets/application.css|g" $i/*.html
 
-echo "[Murga] Removing turbolinks metadata..."
-sed -i 's|data-turbolinks-track="reload"||g' exercises/*.html
-sed -i 's|data-turbolinks="true"||g' exercises/*.html
+  echo "[Murga] Removing turbolinks metadata..."
+  sed -i 's|data-turbolinks-track="reload"||g' exercises/*.html
+  sed -i 's|data-turbolinks="true"||g' exercises/*.html
 
-for i in theme_stylesheet extension_javascript; do
-  echo "[Murga] Removing $i..."
-  sed -i "s|.*$i.*||g" exercises/*.html
+  for i in theme_stylesheet extension_javascript; do
+    echo "[Murga] Removing $i..."
+    sed -i "s|.*$i.*||g" exercises/*.html
+  done
 done
 
-echo "[Murga] Resolving exercse references..."
-sed -i "s|/primaria/exercises/\([0-9][0-9][0-9][0-9]\)|\1.html#|g" exercises/*.html
+
+echo "[Murga] Resolving exercises references..."
+sed -i "s|/primaria/exercises/\([0-9]\+\)|\1.html#|g"               exercises/*.html
+sed -i "s|/primaria/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  lessons/*.html
+sed -i "s|/primaria/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  chapters/*.html
+
+echo "[Murga] Resolving chapters references..."
+sed -i "s|/primaria/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    exercises/*.html
+sed -i "s|/primaria/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    lessons/*.html
+sed -i "s|/primaria/chapters/\([0-9]\+\)|\1.html#|g"                chapters/*.html
+
+echo "[Murga] Resolving lessons references..."
+sed -i "s|/primaria/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      exercises/*.html
+sed -i "s|/primaria/lessons/\([0-9]\+\)|\1.html#|g"                 lessons/*.html
+sed -i "s|/primaria/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      chapters/*.html
+
 
 echo "[Murga] Replacing Gobstones assets..."
 for i in polymer.html gs-board.html \
          polymer-mini.html polymer-micro.html \
-         gobstones-test-runner.js offline.js \
+         runner.js offline.js \
          editor/editor.html editor/editor.css \
          editor/editor.js editor/hammer.min.js \
          editor/gobstones-code-runner.html \

@@ -15,24 +15,34 @@ function createWindow () {
 
   let menu = Menu.buildFromTemplate([
     {
-        label: 'Recorridos',
+        label: 'Primaria',
         submenu: [
-            {
-              label:'Primaria - Capitulo 1 - Primeros Programas',
-              click() { mainWindow.loadFile('exercises/1529.html') }
-            },
-            {
-              label:'Primaria - Capitulo 1 - Práctica Primeros Programas',
-              click() { mainWindow.loadFile('exercises/1544.html') }
-            },
-            {
-              label:'Primaria - Capitulo 2 - Procedimientos',
-              click() { mainWindow.loadFile('exercises/1715.html') }
-            },
-            {
-              label:'Primaria - Capitulo 2 - Práctica Procedimientos',
-              click() { mainWindow.loadFile('exercises/1669.html') }
-            },
+          {
+            label: 'Capitulo 1',
+            submenu: [
+              {
+                label:'Primeros Programas',
+                click() { mainWindow.loadFile('exercises/1529.html') }
+              },
+              {
+                label:'Práctica Primeros Programas',
+                click() { mainWindow.loadFile('exercises/1544.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capitulo 2',
+            submenu: [
+              {
+                label:'Procedimientos',
+                click() { mainWindow.loadFile('exercises/1715.html') }
+              },
+              {
+                label:'Práctica Procedimientos',
+                click() { mainWindow.loadFile('exercises/1669.html') }
+              }
+            ]
+          }
         ]
     }
   ])
@@ -40,7 +50,7 @@ function createWindow () {
 
   mainWindow.loadFile('exercises/1715.html')
 
-  mainWindow.webContents.openDevTools()
+  //mainWindow.webContents.openDevTools()
 
   mainWindow.on('closed', function () {
     mainWindow = null
