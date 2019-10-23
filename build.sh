@@ -43,7 +43,7 @@ function clone_and_start() {
   if [[ ! -e $repo ]]; then
     echo "[Murga] ... $repo not found! Clonning..."
     git clone git@github.com:flbulgarelli/mumuki-$repo.git $repo
-    pushd mumuki-$repo
+    pushd $repo
     $install_script
     popd
   fi
