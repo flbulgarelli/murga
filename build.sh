@@ -92,8 +92,8 @@ function fetch() {
 
 trap on_exit EXIT
 
+clone_and_start 'gobstones-runner' 'bundle install' 'bundle exec rackup' 9292
 clone_and_start laboratory ./devinit ./devstart 3000
-clone_and_start "gobstones-runner" "bundle install" "bundle exec rackup" 9292
 
 echo "[Murga] Fetching exercises..."
 for i in {1..139}; do
