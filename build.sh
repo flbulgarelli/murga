@@ -15,13 +15,15 @@ echo '        \/            /_____/     \/  '
 rm -rf exercises
 rm -rf lessons
 rm -rf chapters
+rm -rf books
 rm -rf assets
 rm -rf character
 
-mkdir assets
 mkdir exercises
 mkdir lessons
 mkdir chapters
+mkdir books
+mkdir assets
 mkdir -p character/kibi
 mkdir -p character/magnifying_glass
 
@@ -74,7 +76,7 @@ function fetch() {
                                         -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8' \
                                         -H 'Accept-Encoding: gzip, deflate, br' \
                                         -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8' \
-                                        -H 'Cookie: login_organization=primaria; mucookie_session=N3pqbFhjbjlIWExmeFJMQ2xlK1N3NVhNQ0ZFZjdjemlBSHhNYVhySGk2az0tLWw1c1QwRUMxTnlIdVFmRjZ3ZEh3N0E9PQ%3D%3D--7a433a3f9284f53eba1c175ef8a5a4633c665222; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=MWhab3ZqTS9HOEUrY1h4aTZlTWM4UHU0VjlrMnlBcUVwRWtJdk01Nzk2R21MZFM1WW14M0txRGxkWGs2TnNsVmlBUGNoMThYblZ1K1N5WW4zS09WSytJUFRFNGJ1QXZJNGdIbUd0a0VvaFg1MTJWMWpjTG0veFdaZTQ5bEpySVlocFBiMWNZMXJkOE1QUFdIZ082MjZ3PT0tLWJJTEFYbkpROFZIK3dqYlg5TWFRbEE9PQ%3D%3D--6e6de6549a844c9e0b713629544fa102cace8ac2' \
+                                        -H 'Cookie: login_organization=central; mucookie_session=ZC9WMkRHRUNDenprcjhEMzJNUTJBSHI4cHpKOTcyYUw5eE1tdnIyZ0IzRUxZT09FV0RNT3lBSTZncTd5SGUyUy0tZE1uMk5zU2hKbXV1bnVJQVFaS2U3QT09--ea631ca355fff10f5e243b46b512c3d953bcf169; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=R05SOURjK01RcFBtdHBzN21NZzZGNTc2K2RpS0NTRmd2Mk5TdFhLdUNhb0lMeEUvdjFCeTVYdmplSGgxSjMrQnlVd0pnYUFlUWFxSE9MeEVSUmxtZEtYa1FhT2w2Y1pPSXRkQU1XOWNEbjRvcWVBRmQ3L3E3OUxEYmdjN3EzdE5lU0E0Y2ZTdkk3dW10R1lPTGExQXVBPT0tLXRyeHd3TEk3TytDVFI5UWx3SlJZY0E9PQ%3D%3D--401b58bffa9a691f8bfabc687a5a54f91b25cba3' \
                                         --compressed -s > $destination
 
 }
@@ -90,40 +92,27 @@ clone_and_start laboratory ./devinit ./devstart 3000
 clone_and_start "gobstones-runner" "bundle install" "bundle exec rackup" 9292
 
 echo "[Murga] Fetching exercises..."
-for i in {1715..1722}; do
+for i in {1..139}; do
   echo "[Murga] ...fetching exercise $i"
-  fetch "primaria/exercises/$i" "exercises/$i.html"
-done
-
-for i in {1529..1535}; do
-  echo "[Murga] ...fetching exercise $i"
-  fetch "primaria/exercises/$i" "exercises/$i.html"
-done
-
-for i in {1544..1550}; do
-  echo "[Murga] ...fetching exercise $i"
-  fetch "primaria/exercises/$i" "exercises/$i.html"
-done
-
-for i in {1669..1675}; do
-  echo "[Murga] ...fetching exercise $i"
-  fetch "primaria/exercises/$i" "exercises/$i.html"
+  fetch "central/exercises/$i" "exercises/$i.html"
 done
 
 echo "[Murga] Fetching lessons..."
 
-for i in 84 85 94 95 107 108; do
+for i in {1..14}; do
   echo "[Murga] ...fetching lessons $i"
-  fetch "primaria/lessons/$i" "lessons/$i.html"
+  fetch "central/lessons/$i" "lessons/$i.html"
 done
 
 echo "[Murga] Fetching chapters..."
 
-for i in {37..42}; do
+for i in {1..7}; do
   echo "[Murga] ...fetching chapters $i"
-  fetch "primaria/chapters/$i" "chapters/$i.html"
+  fetch "central/chapters/$i" "chapters/$i.html"
 done
 
+echo "[Murga] ...fetching book 1"
+fetch "central/books/1" "books/1.html"
 
 echo "[Murga] Fetching application css and js..."
 js=$(grep -P "/assets/mumuki_laboratory/application\-.*\.js" exercises/*.html -oh | head -n1)
@@ -149,19 +138,19 @@ done
 
 
 echo "[Murga] Resolving exercises references..."
-sed -i "s|/primaria/exercises/\([0-9]\+\)|\1.html#|g"               exercises/*.html
-sed -i "s|/primaria/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  lessons/*.html
-sed -i "s|/primaria/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  chapters/*.html
+sed -i "s|/central/exercises/\([0-9]\+\)|\1.html#|g"               exercises/*.html
+sed -i "s|/central/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  lessons/*.html
+sed -i "s|/central/exercises/\([0-9]\+\)|../exercises/\1.html#|g"  chapters/*.html
 
 echo "[Murga] Resolving chapters references..."
-sed -i "s|/primaria/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    exercises/*.html
-sed -i "s|/primaria/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    lessons/*.html
-sed -i "s|/primaria/chapters/\([0-9]\+\)|\1.html#|g"                chapters/*.html
+sed -i "s|/central/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    exercises/*.html
+sed -i "s|/central/chapters/\([0-9]\+\)|../chapters/\1.html#|g"    lessons/*.html
+sed -i "s|/central/chapters/\([0-9]\+\)|\1.html#|g"                chapters/*.html
 
 echo "[Murga] Resolving lessons references..."
-sed -i "s|/primaria/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      exercises/*.html
-sed -i "s|/primaria/lessons/\([0-9]\+\)|\1.html#|g"                 lessons/*.html
-sed -i "s|/primaria/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      chapters/*.html
+sed -i "s|/central/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      exercises/*.html
+sed -i "s|/central/lessons/\([0-9]\+\)|\1.html#|g"                 lessons/*.html
+sed -i "s|/central/lessons/\([0-9]\+\)|../lessons/\1.html#|g"      chapters/*.html
 
 
 echo "[Murga] Replacing Gobstones assets..."
