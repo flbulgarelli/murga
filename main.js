@@ -18,28 +18,93 @@ function createWindow () {
         label: 'Primaria',
         submenu: [
           {
-            label: 'Capitulo 1',
+            label: 'Capítulo 1:  Un tablero de bolitas movedizas',
             submenu: [
               {
-                label:'Primeros Programas',
-                click() { mainWindow.loadFile('exercises/1529.html') }
+                label: 'Lección 1: Explorando el tablero',
+                click() { mainWindow.loadFile('lessons/1.html') }
               },
               {
-                label:'Práctica Primeros Programas',
-                click() { mainWindow.loadFile('exercises/1544.html') }
+                label: 'Lección 2: Las aventuras de Mukinita',
+                click() { mainWindow.loadFile('lessons/2.html') }
               }
             ]
           },
           {
-            label: 'Capitulo 2',
+            label: 'Capítulo 2:  Un jardín de procedimientos',
             submenu: [
               {
-                label:'Procedimientos',
-                click() { mainWindow.loadFile('exercises/1715.html') }
+                label: 'Lección 1: Sembrando futuro',
+                click() { mainWindow.loadFile('lessons/3.html') }
               },
               {
-                label:'Práctica Procedimientos',
-                click() { mainWindow.loadFile('exercises/1669.html') }
+                label: 'Lección 2: Rindiendo frutos',
+                click() { mainWindow.loadFile('lessons/4.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capítulo 3:  Un día irrepetible con las abejas',
+            submenu: [
+              {
+                label: 'Lección 1: La danza de la miel',
+                click() { mainWindow.loadFile('lessons/5.html') }
+              },
+              {
+                label: 'Lección 2: Campo de flores',
+                click() { mainWindow.loadFile('lessons/6.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capítulo 4:  Una heladería con alternativas',
+            submenu: [
+              {
+                label: 'Lección 1: Hay palito bombón helado',
+                click() { mainWindow.loadFile('lessons/7.html') }
+              },
+              {
+                label: 'Lección 2: Muchos sabores combinados',
+                click() { mainWindow.loadFile('lessons/8.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capítulo 5:  Antiguas expresiones',
+            submenu: [
+              {
+                label: 'Lección 1: La historia con fin',
+                click() { mainWindow.loadFile('lessons/9.html') }
+              },
+              {
+                label: 'Lección 2: Huellas del pasado',
+                click() { mainWindow.loadFile('lessons/10.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capítulo 6:  Costumbres entrelazadas',
+            submenu: [
+              {
+                label: 'Lección 1: Hilando fino',
+                click() { mainWindow.loadFile('lessons/11.html') }
+              },
+              {
+                label: 'Lección 2: Hay tela para rato',
+                click() { mainWindow.loadFile('lessons/12.html') }
+              }
+            ]
+          },
+          {
+            label: 'Capítulo 7:  Una vuelta por el universo',
+            submenu: [
+              {
+                label: 'Lección 1: PlaNotas',
+                click() { mainWindow.loadFile('lessons/13.html') }
+              },
+              {
+                label: 'Lección 2: Mervetimara Jupsaturneplu',
+                click() { mainWindow.loadFile('lessons/14.html') }
               }
             ]
           }
@@ -48,7 +113,7 @@ function createWindow () {
   ])
   Menu.setApplicationMenu(menu);
 
-  mainWindow.loadFile('exercises/1715.html')
+  mainWindow.loadFile('chapters/1.html')
 
   //mainWindow.webContents.openDevTools()
 
