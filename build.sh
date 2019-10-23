@@ -54,13 +54,17 @@ function clone_and_start() {
     pushd $repo
     $start_script >/dev/null 2>&1 &
     popd
+
+    echo "[Murga] Waiting $repo to start..."
+    sleep 10
   fi
   popd
 }
 
 function on_exit() {
-  echo '[Murga] Killing danlingjobs'
+  echo '[Murga] Killing danling jobs'
   for i in $(jobs -p); do
+    echo "[Murga] Killing process $i..."
     kill $i
   done
 }
