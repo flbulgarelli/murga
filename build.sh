@@ -204,3 +204,19 @@ for i in timeout_1 timeout_2 timeout_3; do
   curl "http://localhost:3000/error/$i.svg" -s > assets/$i.svg
 done
 sed -i "s|/error/|../assets/|g" assets/application.js
+
+echo "[Murga] Fetching blockly-package assets..."
+for i in click.mp3 delete.mp3 disconnect.wav sprites.png; do
+  echo "[Murga] ...fetching $i"
+  curl "https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/$i" -s > assets/$i
+done
+sed -i "s|https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/|../assets/|g" assets/editor.html
+
+
+echo "[Murga] Fetching blockly-package assets..."
+for i in color-verde color-negro color-azul color-rojo \
+         direccion-este direccion-norte direccion-oeste direccion-sur; do
+  echo "[Murga] ...fetching $i"
+  curl "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" -s > assets/$i.svg
+done
+sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../assets/|g" assets/editor.html
