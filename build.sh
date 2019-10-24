@@ -172,6 +172,7 @@ for i in polymer.html gs-board.html \
   echo "[Murga] ...replacing $i"
   curl "http://localhost:9292/assets/$i" -s > assets/$file_name
   sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" exercises/*.html
+  sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" lessons/*.html
 done
 
 echo "[Murga] Fetching fonts..."
