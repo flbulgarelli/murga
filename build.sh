@@ -137,6 +137,8 @@ for i in exercises lessons chapters; do
   for i in theme_stylesheet extension_javascript; do
     echo "[Murga] Removing $i..."
     sed -i "s|.*$i.*||g" exercises/*.html
+    sed -i "s|.*$i.*||g" lessons/*.html
+    sed -i "s|.*$i.*||g" chapters/*.html
   done
 done
 
@@ -182,6 +184,15 @@ for i in dev-awesome.woff2 fontawesome-webfont.woff2 fontawesome-webfont.ttf; do
   sed -i "s|/assets/$i|../assets/$i|g" assets/*.css
 done
 
+echo "[Murga] Fetching Google fonts"
+curl "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" -s > assets/googlefonts.css
+curl "https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf"    -s > assets/lato-regular.ttf
+curl "https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf"  -s > assets/lato-italic.ttf
+
+sed -i "s|https://fonts.googleapis.com/css?family=Lato:400,700,400italic|../assets/googlefonts.css|g" assets/*.css
+sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf|../assets/lato-regular.ttf|g"   assets/*.css
+sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf|../assets/lato-italic.ttf|g"  assets/*.css
+
 echo "[Murga] Fetching compass rose..."
 curl "http://localhost:3000/compass_rose.svg" -s > assets/compass_rose.svg
 sed -i "s|/compass_rose.svg|../assets/compass_rose.svg|g" exercises/*.html
@@ -215,7 +226,8 @@ sed -i "s|https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/|../as
 
 echo "[Murga] Fetching blockly-package assets..."
 for i in color-verde color-negro color-azul color-rojo \
-         direccion-este direccion-norte direccion-oeste direccion-sur; do
+         direccion-este direccion-norte direccion-oeste direccion-sur \
+         bool-true bool-false; do
   echo "[Murga] ...fetching $i"
   curl "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" -s > assets/$i.svg
 done
