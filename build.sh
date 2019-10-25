@@ -81,7 +81,7 @@ function fetch() {
                                         -H 'Accept-Encoding: gzip, deflate, br' \
                                         -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8' \
                                         -H 'Cookie: login_organization=central; mucookie_session=ZC9WMkRHRUNDenprcjhEMzJNUTJBSHI4cHpKOTcyYUw5eE1tdnIyZ0IzRUxZT09FV0RNT3lBSTZncTd5SGUyUy0tZE1uMk5zU2hKbXV1bnVJQVFaS2U3QT09--ea631ca355fff10f5e243b46b512c3d953bcf169; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=R05SOURjK01RcFBtdHBzN21NZzZGNTc2K2RpS0NTRmd2Mk5TdFhLdUNhb0lMeEUvdjFCeTVYdmplSGgxSjMrQnlVd0pnYUFlUWFxSE9MeEVSUmxtZEtYa1FhT2w2Y1pPSXRkQU1XOWNEbjRvcWVBRmQ3L3E3OUxEYmdjN3EzdE5lU0E0Y2ZTdkk3dW10R1lPTGExQXVBPT0tLXRyeHd3TEk3TytDVFI5UWx3SlJZY0E9PQ%3D%3D--401b58bffa9a691f8bfabc687a5a54f91b25cba3' \
-                                        --compressed -s > $destination
+                                        --compressed -sL > $destination
 
 }
 
@@ -122,8 +122,8 @@ echo "[Murga] Fetching application css and js..."
 js=$(grep -P "/assets/mumuki_laboratory/application\-.*\.js" exercises/*.html -oh | head -n1)
 css=$(grep -P "/assets/mumuki_laboratory/application\-.*\.css" exercises/*.html -oh | head -n1)
 
-curl "http://localhost:3000$js" -s > assets/application.js
-curl "http://localhost:3000$css" -s > assets/application.css
+curl "http://localhost:3000$js" -sL > assets/application.js
+curl "http://localhost:3000$css" -sL > assets/application.css
 
 for i in exercises lessons chapters; do
   echo "[Murga] Replacing css and js references..."
@@ -172,7 +172,7 @@ for i in polymer.html gs-board.html \
   file_name=$(basename $i)
 
   echo "[Murga] ...replacing $i"
-  curl "http://localhost:9292/assets/$i" -s > assets/$file_name
+  curl "http://localhost:9292/assets/$i" -sL > assets/$file_name
   sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" exercises/*.html
   sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" lessons/*.html
 done
@@ -180,46 +180,46 @@ done
 echo "[Murga] Fetching fonts..."
 for i in dev-awesome.woff2 fontawesome-webfont.woff2 fontawesome-webfont.ttf; do
   echo "[Murga] ...fetching $i"
-  curl "http://localhost:3000/assets/$i" -s > assets/$i
+  curl "http://localhost:3000/assets/$i" -sL > assets/$i
   sed -i "s|/assets/$i|../assets/$i|g" assets/*.css
 done
 
 echo "[Murga] Fetching Google fonts"
-curl "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" -s > assets/googlefonts.css
-curl "https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf"    -s > assets/lato-regular.ttf
-curl "https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf"  -s > assets/lato-italic.ttf
+curl "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" -sL > assets/googlefonts.css
+curl "https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf"    -sL > assets/lato-regular.ttf
+curl "https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf"  -sL > assets/lato-italic.ttf
 
 sed -i "s|https://fonts.googleapis.com/css?family=Lato:400,700,400italic|../assets/googlefonts.css|g" assets/*.css
 sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf|../assets/lato-regular.ttf|g"   assets/*.css
 sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf|../assets/lato-italic.ttf|g"  assets/*.css
 
 echo "[Murga] Fetching compass rose..."
-curl "http://localhost:3000/compass_rose.svg" -s > assets/compass_rose.svg
+curl "http://localhost:3000/compass_rose.svg" -sL > assets/compass_rose.svg
 sed -i "s|/compass_rose.svg|../assets/compass_rose.svg|g" exercises/*.html
 
 echo "[Murga] Fetching characters..."
-curl "http://localhost:3000/character/animations.json" -s > character/animations.json
+curl "http://localhost:3000/character/animations.json" -sL > character/animations.json
 for i in context failure jump success2_l success_l; do
   echo "[Murga] ...fetching kibi/$i"
-  curl "http://localhost:3000/character/kibi/$i.svg" -s > character/kibi/$i.svg
+  curl "http://localhost:3000/character/kibi/$i.svg" -sL > character/kibi/$i.svg
 done
 for i in apparition loop; do
   echo "[Murga] ...fetching magnifying_glass/$i"
-  curl "http://localhost:3000/character/magnifying_glass/$i.svg" -s > character/magnifying_glass/$i.svg
+  curl "http://localhost:3000/character/magnifying_glass/$i.svg" -sL > character/magnifying_glass/$i.svg
 done
 sed -i "s|/character/|../character/|g" assets/application.js
 
 echo "[Murga] Fetching errors..."
 for i in timeout_1 timeout_2 timeout_3; do
   echo "[Murga] ...fetching $i"
-  curl "http://localhost:3000/error/$i.svg" -s > assets/$i.svg
+  curl "http://localhost:3000/error/$i.svg" -sL > assets/$i.svg
 done
 sed -i "s|/error/|../assets/|g" assets/application.js
 
 echo "[Murga] Fetching blockly-package assets..."
 for i in click.mp3 delete.mp3 disconnect.wav sprites.png; do
   echo "[Murga] ...fetching $i"
-  curl "https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/$i" -s > assets/$i
+  curl "https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/$i" -sL > assets/$i
 done
 sed -i "s|https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/|../assets/|g" assets/editor.html
 
@@ -229,6 +229,7 @@ for i in color-verde color-negro color-azul color-rojo \
          direccion-este direccion-norte direccion-oeste direccion-sur \
          bool-true bool-false; do
   echo "[Murga] ...fetching $i"
-  curl "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" -s > assets/$i.svg
+  curl "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" -sL > assets/$i.svg
 done
 sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../assets/|g" assets/editor.html
+
