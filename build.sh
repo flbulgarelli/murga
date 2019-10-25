@@ -233,3 +233,5 @@ for i in color-verde color-negro color-azul color-rojo \
 done
 sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../assets/|g" assets/editor.html
 
+curl "https://mumuki.io/static/for_content/regla_oro.svg" -s > assets/regla_oro.svg
+sed -i "s|https://mumuki.io/static/for_content/regla_oro.svg|../assets/regla_oro.svg|g" exercises/*.html
