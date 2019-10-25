@@ -235,3 +235,7 @@ sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../
 
 curl "https://mumuki.io/static/for_content/regla_oro.svg" -s > assets/regla_oro.svg
 sed -i "s|https://mumuki.io/static/for_content/regla_oro.svg|../assets/regla_oro.svg|g" exercises/*.html
+
+for i in $(grep "https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/toolbox(_.+)?\.xml" exercises/* -PRoh | sort | uniq); do
+  curl $i -sL
+done
