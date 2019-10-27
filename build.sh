@@ -69,7 +69,13 @@ function on_exit() {
   done
 }
 
+curl_opts="-sL"
+
 function fetch() {
+  curl "$1" $curl_opts > "$2"
+}
+
+function fetch_content() {
   source=$1
   destination=$2
   curl "http://localhost:3000/$source" -H 'Connection: keep-alive' \
@@ -81,10 +87,31 @@ function fetch() {
                                         -H 'Accept-Encoding: gzip, deflate, br' \
                                         -H 'Accept-Language: en-US,en;q=0.9,es;q=0.8' \
                                         -H 'Cookie: login_organization=central; mucookie_session=ZC9WMkRHRUNDenprcjhEMzJNUTJBSHI4cHpKOTcyYUw5eE1tdnIyZ0IzRUxZT09FV0RNT3lBSTZncTd5SGUyUy0tZE1uMk5zU2hKbXV1bnVJQVFaS2U3QT09--ea631ca355fff10f5e243b46b512c3d953bcf169; mucookie_profile=eyJ1c2VyX25hbWUiOiIgIiwidXNlcl9pbWFnZV91cmwiOiJ1c2VyX3NoYXBl%0ALnBuZyJ9%0A; _mumuki_laboratory_session=R05SOURjK01RcFBtdHBzN21NZzZGNTc2K2RpS0NTRmd2Mk5TdFhLdUNhb0lMeEUvdjFCeTVYdmplSGgxSjMrQnlVd0pnYUFlUWFxSE9MeEVSUmxtZEtYa1FhT2w2Y1pPSXRkQU1XOWNEbjRvcWVBRmQ3L3E3OUxEYmdjN3EzdE5lU0E0Y2ZTdkk3dW10R1lPTGExQXVBPT0tLXRyeHd3TEk3TytDVFI5UWx3SlJZY0E9PQ%3D%3D--401b58bffa9a691f8bfabc687a5a54f91b25cba3' \
-                                        --compressed -sL > $destination
+                                        --compressed $curl_opts > $destination
 
 }
 
+function scrap_content_assets() {
+  regexp=$1
+  preffix=$2
+  extension=$3
+  content_dirs="exercises/*.html lessons/*.html chapters/*.html books/*.html"
+  for i in $(grep $regexp $content_dirs -PRoh | sort | uniq); do
+    filename=$(to_hashed_filename $i $preffix $extension)
+
+    echo "[Murga] ...fetching $i as $filename"
+    fetch $i assets/$filename
+    sed -i "s|$i|../assets/$filename|g" $content_dirs
+  done
+}
+
+function to_hashed_filename() {
+  url=$1
+  preffix=$2
+  extension=$3
+  hash=$(echo $1 | md5sum | awk '{print $1}')
+  echo ${preffix}_${hash}.${extension}
+}
 
 ############
 ## Script ##
@@ -98,32 +125,32 @@ clone_and_start laboratory ./devinit ./devstart 3000
 echo "[Murga] Fetching exercises..."
 for i in {1..139}; do
   echo "[Murga] ...fetching exercise $i"
-  fetch "central/exercises/$i" "exercises/$i.html"
+  fetch_content "central/exercises/$i" "exercises/$i.html"
 done
 
 echo "[Murga] Fetching lessons..."
 
 for i in {1..14}; do
   echo "[Murga] ...fetching lessons $i"
-  fetch "central/lessons/$i" "lessons/$i.html"
+  fetch_content "central/lessons/$i" "lessons/$i.html"
 done
 
 echo "[Murga] Fetching chapters..."
 
 for i in {1..7}; do
   echo "[Murga] ...fetching chapters $i"
-  fetch "central/chapters/$i" "chapters/$i.html"
+  fetch_content "central/chapters/$i" "chapters/$i.html"
 done
 
 echo "[Murga] ...fetching book 1"
-fetch "central/books/1" "books/1.html"
+fetch_content "central/books/1" "books/1.html"
 
 echo "[Murga] Fetching application css and js..."
 js=$(grep -P "/assets/mumuki_laboratory/application\-.*\.js" exercises/*.html -oh | head -n1)
 css=$(grep -P "/assets/mumuki_laboratory/application\-.*\.css" exercises/*.html -oh | head -n1)
 
-curl "http://localhost:3000$js" -sL > assets/application.js
-curl "http://localhost:3000$css" -sL > assets/application.css
+fetch "http://localhost:3000$js" assets/application.js
+fetch "http://localhost:3000$css" assets/application.css
 
 for i in exercises lessons chapters; do
   echo "[Murga] Replacing css and js references..."
@@ -169,57 +196,57 @@ for i in polymer.html gs-board.html \
          editor/gs-element-blockly.html \
          editor/attires_enabled.svg editor/attires_disabled.svg  \
          editor/red.svg editor/green.svg editor/blue.svg editor/black.svg; do
-  file_name=$(basename $i)
+  filename=$(basename $i)
 
   echo "[Murga] ...replacing $i"
-  curl "http://localhost:9292/assets/$i" -sL > assets/$file_name
-  sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" exercises/*.html
-  sed -i "s|http://localhost:9292/assets/$i|../assets/$file_name|g" lessons/*.html
+  fetch "http://localhost:9292/assets/$i" assets/$filename
+  sed -i "s|http://localhost:9292/assets/$i|../assets/$filename|g" exercises/*.html
+  sed -i "s|http://localhost:9292/assets/$i|../assets/$filename|g" lessons/*.html
 done
 
 echo "[Murga] Fetching fonts..."
 for i in dev-awesome.woff2 fontawesome-webfont.woff2 fontawesome-webfont.ttf; do
   echo "[Murga] ...fetching $i"
-  curl "http://localhost:3000/assets/$i" -sL > assets/$i
+  fetch "http://localhost:3000/assets/$i" assets/$i
   sed -i "s|/assets/$i|../assets/$i|g" assets/*.css
 done
 
 echo "[Murga] Fetching Google fonts"
-curl "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" -sL > assets/googlefonts.css
-curl "https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf"    -sL > assets/lato-regular.ttf
-curl "https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf"  -sL > assets/lato-italic.ttf
+fetch "https://fonts.googleapis.com/css?family=Lato:400,700,400italic" assets/googlefonts.css
+fetch "https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf"    assets/lato-regular.ttf
+fetch "https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf"  assets/lato-italic.ttf
 
 sed -i "s|https://fonts.googleapis.com/css?family=Lato:400,700,400italic|../assets/googlefonts.css|g" assets/*.css
 sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6uyw4BMUTPHjx4wWw.ttf|../assets/lato-regular.ttf|g"   assets/*.css
 sed -i "s|https://fonts.gstatic.com/s/lato/v16/S6u8w4BMUTPHjxsAXC-v.ttf|../assets/lato-italic.ttf|g"  assets/*.css
 
 echo "[Murga] Fetching compass rose..."
-curl "http://localhost:3000/compass_rose.svg" -sL > assets/compass_rose.svg
+fetch "http://localhost:3000/compass_rose.svg" assets/compass_rose.svg
 sed -i "s|/compass_rose.svg|../assets/compass_rose.svg|g" exercises/*.html
 
 echo "[Murga] Fetching characters..."
-curl "http://localhost:3000/character/animations.json" -sL > character/animations.json
+fetch "http://localhost:3000/character/animations.json" character/animations.json
 for i in context failure jump success2_l success_l; do
   echo "[Murga] ...fetching kibi/$i"
-  curl "http://localhost:3000/character/kibi/$i.svg" -sL > character/kibi/$i.svg
+  fetch "http://localhost:3000/character/kibi/$i.svg" character/kibi/$i.svg
 done
 for i in apparition loop; do
   echo "[Murga] ...fetching magnifying_glass/$i"
-  curl "http://localhost:3000/character/magnifying_glass/$i.svg" -sL > character/magnifying_glass/$i.svg
+  fetch "http://localhost:3000/character/magnifying_glass/$i.svg" character/magnifying_glass/$i.svg
 done
 sed -i "s|/character/|../character/|g" assets/application.js
 
 echo "[Murga] Fetching errors..."
 for i in timeout_1 timeout_2 timeout_3; do
   echo "[Murga] ...fetching $i"
-  curl "http://localhost:3000/error/$i.svg" -sL > assets/$i.svg
+  fetch "http://localhost:3000/error/$i.svg" assets/$i.svg
 done
 sed -i "s|/error/|../assets/|g" assets/application.js
 
 echo "[Murga] Fetching blockly-package assets..."
 for i in click.mp3 delete.mp3 disconnect.wav sprites.png; do
   echo "[Murga] ...fetching $i"
-  curl "https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/$i" -sL > assets/$i
+  fetch "https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/$i" assets/$i
 done
 sed -i "s|https://github.com/Program-AR/blockly-package/raw/v0.0.15/media/|../assets/|g" assets/editor.html
 
@@ -229,13 +256,17 @@ for i in color-verde color-negro color-azul color-rojo \
          direccion-este direccion-norte direccion-oeste direccion-sur \
          bool-true bool-false; do
   echo "[Murga] ...fetching $i"
-  curl "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" -sL > assets/$i.svg
+  fetch "https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/$i.svg?sanitize=true" assets/$i.svg
 done
 sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../assets/|g" assets/editor.html
 
-curl "https://mumuki.io/static/for_content/regla_oro.svg" -s > assets/regla_oro.svg
-sed -i "s|https://mumuki.io/static/for_content/regla_oro.svg|../assets/regla_oro.svg|g" exercises/*.html
 
-for i in $(grep "https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/toolbox(_.+)?\.xml" exercises/* -PRoh | sort | uniq); do
-  curl $i -sL
-done
+
+echo "[Murga] Fetching toolboxes..."
+scrap_content_assets "https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/attires/config(_.+)?\.json" "attires" "json"
+
+echo "[Murga] Fetching attires..."
+scrap_content_assets "https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/toolbox(_.+)?\.xml" "toolbox" "xml"
+
+echo "[Murga] Fetching static content assets..."
+scrap_content_assets "https://mumuki.io/static/for_content/[^/]+\.svg" "static_content" "svg"
