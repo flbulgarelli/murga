@@ -95,7 +95,7 @@ function scrap_content_assets() {
   regexp=$1
   preffix=$2
   extension=$3
-  content_dirs="exercises/*.html lessons/*.html chapters/*.html books/*.html"
+  content_dirs="exercises/*.html lessons/*.html chapters/*.html books/*.html assets/attires*.json"
   for i in $(grep $regexp $content_dirs -PRoh | sort | uniq); do
     filename=$(to_hashed_filename $i $preffix $extension)
 
@@ -270,3 +270,6 @@ scrap_content_assets "https://raw.githubusercontent.com/MumukiProject/[^/]+/mast
 
 echo "[Murga] Fetching static content assets..."
 scrap_content_assets "https://mumuki.io/static/for_content/[^/]+\.svg" "static_content" "svg"
+
+echo "[Murga] Fetching attires images..."
+scrap_content_assets 'https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/[^"]*\.png' "attire_image" "png"
