@@ -282,4 +282,4 @@ scrap_content_assets 'https://user-images.githubusercontent.com/[^"\\]*\.png' "m
 
 # this is only required for building with electron 3.x
 # newer versions do not require this hack
-sed -i 's|!noGlobal|true' assets/application.js
+sed -i 's|!noGlobal|true|' assets/application.js
