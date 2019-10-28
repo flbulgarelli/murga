@@ -273,3 +273,7 @@ scrap_content_assets "https://mumuki.io/static/for_content/[^/]+\.svg" "static_c
 
 echo "[Murga] Fetching attires images..."
 scrap_content_assets 'https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/[^"]*\.png' "attire_image" "png"
+
+# this is only required for building with electron 3.x
+# newer versions do not require this hack
+sed -i 's|!noGlobal|true' assets/application.js
