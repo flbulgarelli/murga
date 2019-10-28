@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron')
+const {app, dialog, BrowserWindow, Menu} = require('electron')
 const path = require('path')
 
 let mainWindow
@@ -110,6 +110,17 @@ function createWindow () {
             ]
           }
         ]
+    },
+    {
+      label: 'Ayuda',
+      submenu: [
+        {
+          label: 'Acerca de Murga',
+          click() {
+            dialog.showMessageBox({type: "info", title: "Acerca de Murga", message: "Murga es la aplicación offline de Mumuki"})
+          }
+        }
+      ]
     }
   ])
   Menu.setApplicationMenu(menu);
