@@ -1,5 +1,10 @@
 const {app, dialog, BrowserWindow, Menu} = require('electron')
 const path = require('path')
+const fs = require('fs-extra');
+
+const appName = app.getName();
+const appPath = path.join(app.getPath('appData'), appName);
+
 
 let mainWindow
 
@@ -118,6 +123,23 @@ function createWindow () {
           label: 'Acerca de Murga',
           click() {
             dialog.showMessageBox({type: "info", title: "Acerca de Murga", message: "Murga es la aplicación offline de Mumuki"})
+          }
+        },
+        {
+          label: 'Reiniciar progreso',
+          click() {
+            let option = dialog.showMessageBox({
+              type: "warning",
+              title: "Reiniciar progreso",
+              message: "¡Cuidado! Esto va a eliminar todo el progreso de TODAS tus lecciones. ¿Querés continuar?",
+              buttons: ["Aceptar", "Cancelar"]})
+
+            if (option == 0) {
+              fs.unlink(appPath, () => {
+                app.relaunch();
+                app.exit();
+              });
+            }
           }
         }
       ]
