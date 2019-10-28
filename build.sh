@@ -95,7 +95,7 @@ function scrap_content_assets() {
   regexp=$1
   preffix=$2
   extension=$3
-  content_dirs="exercises/*.html lessons/*.html chapters/*.html books/*.html assets/attires*.json"
+  content_dirs="exercises/*.html lessons/*.html chapters/*.html books/*.html assets/attires*.json assets/*.html"
   for i in $(grep $regexp $content_dirs -PRoh | sort | uniq); do
     filename=$(to_hashed_filename $i $preffix $extension)
 
