@@ -261,7 +261,6 @@ done
 sed -i "s|https://github.com/Program-AR/gs-element-blockly/raw/0.19.1/media/|../assets/|g" assets/editor.html
 
 
-
 echo "[Murga] Fetching toolboxes..."
 scrap_content_assets "https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/attires/config(_.+)?\.json" "attires" "json"
 
@@ -272,7 +271,14 @@ echo "[Murga] Fetching static content assets..."
 scrap_content_assets "https://mumuki.io/static/for_content/[^/]+\.svg" "static_content" "svg"
 
 echo "[Murga] Fetching attires images..."
-scrap_content_assets 'https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/[^"]*\.png' "attire_image" "png"
+scrap_content_assets 'https://raw.githubusercontent.com/MumukiProject/[^/]+/master/assets/[^"\\]*\.png' "attire_image" "png"
+
+echo "[Murga] Fetching content images..."
+scrap_content_assets 'https://raw.githubusercontent.com/MumukiProject/[^/]+/master/images/[^"\\]*\.png' "content_image" "png"
+
+echo "[Murga] Fetching misc images..." # currently just boom
+scrap_content_assets 'https://user-images.githubusercontent.com/[^"\\]*\.png' "misc_image" "png"
+
 
 # this is only required for building with electron 3.x
 # newer versions do not require this hack
