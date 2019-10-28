@@ -135,7 +135,7 @@ function createWindow () {
               buttons: ["Aceptar", "Cancelar"]})
 
             if (option == 0) {
-              fs.unlink(appPath, () => {
+              fs.remove(appPath, () => {
                 app.relaunch();
                 app.exit();
               });
