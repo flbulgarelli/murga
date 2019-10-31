@@ -3,13 +3,13 @@
 function package() {
   platform=$1
   arch=$2
-  rm -f murga-$platform-$arch.zip
+  rm -f mumuki-$platform-$arch.zip
 
   echo "[Murga] ...building package for $platform - $arch..."
-  electron-packager . --overwrite --platform=$platform --arch=$arch
+  electron-packager . mumuki --overwrite --platform=$platform --arch=$arch --ignore="server|.git(ignore|modules)?|mumuki-.*|build.sh|package.sh"
 
   echo "[Murga] ...compressing..."
-  zip -r murga-$platform-$arch.zip murga-$platform-$arch
+  zip -r mumuki-$platform-$arch.zip mumuki-$platform-$arch
 }
 
 echo "[Murga] Packaging for Linux..."
